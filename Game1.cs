@@ -56,11 +56,11 @@ namespace Topic_3___animation
             tribbleSpeed.Add(new Vector2(5, 5));
             tribbleTexture.Add(tribbleCreamTexture);
 
-            tribbleRects.Add(new Rectangle(300, 10, 100, 100));
+            tribbleRects.Add(new Rectangle(450, 10, 100, 100));
             tribbleSpeed.Add(new Vector2(5, 5));
             tribbleTexture.Add(tribbleOrangeTexture);
 
-            tribbleRects.Add(new Rectangle(300, 10, 100, 100));
+            tribbleRects.Add(new Rectangle(600, 10, 100, 100));
             tribbleSpeed.Add(new Vector2(5, 5));
             tribbleTexture.Add(tribbleBrownTexture);
 
@@ -82,13 +82,27 @@ namespace Topic_3___animation
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            for (int i = 0; i < tribbleRects.Count; i++)
+            {
+                Rectangle temp = tribbleRects[i];
+                temp.X += (int)tribbleSpeed[i].X;
+                temp.Y += (int)tribbleSpeed[i].Y;
+                tribbleRects[i] = temp;
 
-            greyTribbleRect.X += (int)tribbleGreySpeed.X;//makes x move
-            greyTribbleRect.Y += (int)tribbleGreySpeed.Y;//makes y move
-            if (greyTribbleRect.Right > _graphics.PreferredBackBufferWidth || greyTribbleRect.Left < 0)//makes it hit the wall 
-                tribbleGreySpeed.X *= -1;
-            if (greyTribbleRect.Bottom > _graphics.PreferredBackBufferHeight || greyTribbleRect.Top < 0)//makes it hit the top and bottom
-                tribbleGreySpeed.Y *= -1;
+                if (tribbleRects[i].Right > _graphics.PreferredBackBufferWidth || tribbleRects[i].Left < 0)
+                {
+                    Vector2 tempSpeed = tribbleSpeed[i];
+                    tempSpeed.X *= -1;
+                    tribbleSpeed[i] = tempSpeed;
+                }
+                if (tribbleRects[i].Bottom > _graphics.PreferredBackBufferHeight || tribbleRects[i].Top < 0)
+                {
+                    Vector2 tempSpeed = tribbleSpeed[i];
+                    tempSpeed.Y *= -1;
+                    tribbleSpeed[i] = tempSpeed;
+                }
+               
+            }
 
             // TODO: Add your update logic here
 
@@ -100,7 +114,10 @@ namespace Topic_3___animation
             GraphicsDevice.Clear(Color.Sienna);
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(tribbleGreyTexture, greyTribbleRect, Color.White);//draws the tribble
+            for (int i = 0; i < tribbleTexture.Count; i++)
+            {
+                _spriteBatch.Draw(tribbleTexture[i], tribbleRects[i], Color.White); //Doesnt work
+            } 
             _spriteBatch.End();
 
             // TODO: Add your drawing code here
