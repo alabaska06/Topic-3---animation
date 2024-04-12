@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Topic_3___animation
@@ -30,6 +31,8 @@ namespace Topic_3___animation
         Texture2D tribbleOrangeTexture;
         Texture2D tribbleBrownTexture;
 
+        Random generator = new Random();
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -48,23 +51,28 @@ namespace Topic_3___animation
             _graphics.PreferredBackBufferHeight = 600;
             _graphics.ApplyChanges();
 
+            
+
+            base.Initialize();
+
+
+
             tribbleRects.Add(new Rectangle(150, 10, 100, 100));//size and start position
-            tribbleSpeed.Add(new Vector2(5, 5));//first is speed horizontally, second is speed vertically
+            tribbleSpeed.Add(new Vector2(5, 0));//first is speed horizontally, second is speed vertically
             tribbleTexture.Add(tribbleGreyTexture);
 
             tribbleRects.Add(new Rectangle(300, 10, 100, 100));
-            tribbleSpeed.Add(new Vector2(5, 5));
+            tribbleSpeed.Add(new Vector2(0, 5));
             tribbleTexture.Add(tribbleCreamTexture);
 
             tribbleRects.Add(new Rectangle(450, 10, 100, 100));
-            tribbleSpeed.Add(new Vector2(5, 5));
+            tribbleSpeed.Add(new Vector2(7, 6));
             tribbleTexture.Add(tribbleOrangeTexture);
 
             tribbleRects.Add(new Rectangle(600, 10, 100, 100));
-            tribbleSpeed.Add(new Vector2(5, 5));
+            tribbleSpeed.Add(new Vector2(5,5));
             tribbleTexture.Add(tribbleBrownTexture);
 
-            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -100,6 +108,15 @@ namespace Topic_3___animation
                     Vector2 tempSpeed = tribbleSpeed[i];
                     tempSpeed.Y *= -1;
                     tribbleSpeed[i] = tempSpeed;
+
+                    if (tribbleRects[3].Bottom > _graphics.PreferredBackBufferHeight || tribbleRects[3].Top < 0)
+                    {
+                        //This is where im trying to change the background color when it hits the wall
+                        Vector2 tempSpeed4 = tribbleSpeed[4];
+                        tempSpeed.Y *= -1;
+                        
+                        tribbleSpeed[4] = tempSpeed4;
+                    }
                 }
                
             }
@@ -114,11 +131,14 @@ namespace Topic_3___animation
             GraphicsDevice.Clear(Color.Sienna);
 
             _spriteBatch.Begin();
+
             for (int i = 0; i < tribbleTexture.Count; i++)
             {
-                _spriteBatch.Draw(tribbleTexture[i], tribbleRects[i], Color.White); //Doesnt work
-            } 
+                _spriteBatch.Draw(tribbleTexture[i], tribbleRects[i], Color.White);
+            }
+
             _spriteBatch.End();
+
 
             // TODO: Add your drawing code here
 
