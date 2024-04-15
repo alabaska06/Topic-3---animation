@@ -8,6 +8,7 @@ namespace Topic_3___animation
 {
     public class Game1 : Game
     {
+
         Rectangle greyTribbleRect;//for the size and start position
         Vector2 tribbleGreySpeed;//for the speed 
 
@@ -19,6 +20,8 @@ namespace Topic_3___animation
 
         Rectangle brownTribbleRect;
         Vector2 tribbleBrownSpeed;
+
+
 
         List<Rectangle> tribbleRects = new List<Rectangle>();
 
@@ -82,6 +85,9 @@ namespace Topic_3___animation
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
+
+       
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,11 +103,15 @@ namespace Topic_3___animation
                 temp.Y += (int)tribbleSpeed[i].Y;
                 tribbleRects[i] = temp;
 
+                GraphicsDevice.Clear(Color.White);
+
                 if (tribbleRects[i].Right > _graphics.PreferredBackBufferWidth || tribbleRects[i].Left < 0)
                 {
                     Vector2 tempSpeed = tribbleSpeed[i];
                     tempSpeed.X *= -1;
                     tribbleSpeed[i] = tempSpeed;
+
+                    GraphicsDevice.Clear(GetRandomColor());
                 }
                 if (tribbleRects[i].Bottom > _graphics.PreferredBackBufferHeight || tribbleRects[i].Top < 0)
                 {
@@ -109,21 +119,19 @@ namespace Topic_3___animation
                     tempSpeed.Y *= -1;
                     tribbleSpeed[i] = tempSpeed;
 
-                    if (tribbleRects[3].Bottom > _graphics.PreferredBackBufferHeight || tribbleRects[3].Top < 0)
-                    {
-                        //This is where im trying to change the background color when it hits the wall
-                        Vector2 tempSpeed4 = tribbleSpeed[4];
-                        tempSpeed.Y *= -1;
-                        
-                        tribbleSpeed[4] = tempSpeed4;
-                    }
+                    GraphicsDevice.Clear(GetRandomColor());
                 }
-               
             }
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+        }
+
+        private Color GetRandomColor()
+        {
+            Random random = new Random();
+            return new Color(random.Next(256), random.Next(256), random.Next(256));
         }
 
         protected override void Draw(GameTime gameTime)
