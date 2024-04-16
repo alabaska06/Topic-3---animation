@@ -21,7 +21,7 @@ namespace Topic_3___animation
         Rectangle brownTribbleRect;
         Vector2 tribbleBrownSpeed;
 
-
+        Color bgColor;
 
         List<Rectangle> tribbleRects = new List<Rectangle>();
 
@@ -54,7 +54,7 @@ namespace Topic_3___animation
             _graphics.PreferredBackBufferHeight = 600;
             _graphics.ApplyChanges();
 
-            
+            bgColor = Color.Goldenrod;
 
             base.Initialize();
 
@@ -103,23 +103,22 @@ namespace Topic_3___animation
                 temp.Y += (int)tribbleSpeed[i].Y;
                 tribbleRects[i] = temp;
 
-                GraphicsDevice.Clear(Color.White);
 
                 if (tribbleRects[i].Right > _graphics.PreferredBackBufferWidth || tribbleRects[i].Left < 0)
                 {
                     Vector2 tempSpeed = tribbleSpeed[i];
                     tempSpeed.X *= -1;
                     tribbleSpeed[i] = tempSpeed;
-
-                    GraphicsDevice.Clear(GetRandomColor());
+                    if (i == tribbleRects.Count - 1)
+                        bgColor = GetRandomColor();
                 }
                 if (tribbleRects[i].Bottom > _graphics.PreferredBackBufferHeight || tribbleRects[i].Top < 0)
                 {
                     Vector2 tempSpeed = tribbleSpeed[i];
                     tempSpeed.Y *= -1;
                     tribbleSpeed[i] = tempSpeed;
-
-                    GraphicsDevice.Clear(GetRandomColor());
+                    if (i == tribbleRects.Count - 1)
+                        bgColor = GetRandomColor();
                 }
             }
 
@@ -130,13 +129,12 @@ namespace Topic_3___animation
 
         private Color GetRandomColor()
         {
-            Random random = new Random();
-            return new Color(random.Next(256), random.Next(256), random.Next(256));
+            return new Color(generator.Next(256), generator.Next(256), generator.Next(256));
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Sienna);
+            GraphicsDevice.Clear(bgColor);
 
             _spriteBatch.Begin();
 
